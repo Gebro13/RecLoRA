@@ -1,34 +1,29 @@
-Currently run: zjc 1,2,4 dxy cb zcx 2,3  dk ljh cjz sr why 
 
-
-
-bash /data/zhujiachen/create_envs.sh
-conda activate rella
-pip install /data/zhujiachen/h5py-3.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+bash /data/XXXX/create_envs.sh
+pip install /data/XXXX/h5py-3.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 
 sudo fuser -v /dev/nvidia* |awk '{for(i=1;i<=NF;i++)print "kill -9 " $i;}' | sudo sh
 
-conda activate rella
-cd /data/zhujiachen/llm
+cd /data/XXXX/llm
 clear
 pwd
 
-bash /data/zhujiachen/create_hf4.35_envs.sh
+bash /data/XXXX/create_hf4.35_envs.sh
 
 conda activate hf4.35.2
-cd /data/zhujiachen/llm
+cd /data/XXXX/llm
 clear
 pwd
 
 pip install GPUtil
-bash /data/zhujiachen/watchdog.sh
+bash /data/XXXX/watchdog.sh
 
 CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec_4_35.py --train_size 128 --K 30 --train_type mixed --test_type high --test_range 0:3000 --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0
 
 CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 30 --ctr_K 60 --train_type simple --test_type simple --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 3e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 10 
     
 
-#zjc=======================
+#=======================
 
     M1:
     rm -rf /home/ma-user/.cache/huggingface/datasets/
@@ -65,129 +60,6 @@ CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_ra
     rm -rf /home/ma-user/.cache/huggingface/datasets/
     
      CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 15 --epochs 5 --ret
-    
-#dxy===============================
-
-    dxy 00854847
-    M1: 
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-     CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 15 --epochs 10 --ret
-    
-    gpu 1
-    
-    M2:
-    
-    gpu1
-    
-
-#zmh===============================
-
-    zmh 00835017
-
-#why===============================
-
-    why 50038367
-    M1:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 10 
-    
-    M2:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 1e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 10
-    
-    M3:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 7e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 10
-    
-#zcx===============================
-
-    zcx: 00834981
-    M1:
-    ./multi_run.sh 3e-4 256 3e-4 256 3e-4 256 512 60000
-    
-    M2:
-     rm -rf /home/ma-user/.cache/huggingface/datasets/
-    
-    
-    ./multi_run.sh 3e-4 256 3e-4 256 3e-4 256 1024 50000
-
-    M3:
-     rm -rf /home/ma-user/.cache/huggingface/datasets/
-    
-    ./multi_run.sh 3e-4 256 3e-4 256 3e-4 256 2048 40000
-
-    M4:
-     rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset GoodReads --mode ctr --model_name vicuna-7b --layers [q,v] --lr 3e-4 --bs 256 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 1 --epochs 5
-    
-
-    M5:
-    
-#cb===============================
-
-    cb
-    00562828
-    M1:
-    
-    gpu 0 
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-     CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 5 --epochs 5 --ret --ctr_dropout 0
-    
-    M2:
-    
-    gpu0
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-     CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 5 --epochs 10 --ret --ctr_dropout 0
-    
-    M3:
-    
-    gpu 0 
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-     CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 15 --epochs 5 --ret --ctr_dropout 0
-    
-    M4:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-     CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 10 --ctr_K 60 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 5e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16 --temperature 15 --epochs 10 --ret --ctr_dropout 0
-    
-    
-#===============================
-
-sr
-    1266072
-    M1:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 70000 --test_range 0:30000 --K 30 --train_type sequential --test_type sequential --dataset ml-1m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 1e-4 --bs 256 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 16
-    gpu 0
-
-    gpu 1
-    M2:
-    rm -rf /home/ma-user/.cache/huggingface/datasets/
-CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 90000 --test_range 0:30000 --K 30 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 3e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 8
-
-    gpu 0
- 
-    gpu 1
-#===============================
-
-ljh:
-50034370
-    M1:
-  
-     gpu 0
-rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=0 python -u ft_script_lorec_mis.py --train_size 90000 --test_range 0:30000 --K 30 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name mistral-7b --layers [q,k,v,o] --lr 1e-4 --bs 256 --weight_decay 0  --lora_dropout 0.1 --head lm --enable_softmax --lora_r 64 --lora_assemble_num 4 
- 
-    gpu 1
-rm -rf /home/ma-user/.cache/huggingface/datasets/
-    CUDA_VISIBLE_DEVICES=1 python -u ft_script_lorec_mis.py --train_size 90000 --test_range 0:30000 --K 30 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name mistral-7b --layers [q,k,v,o] --lr 1e-4 --bs 256 --weight_decay 0  --lora_dropout 0.1 --head lm --enable_softmax --lora_r 64 --lora_assemble_num 2 
- 
-    M2:
-   rm -rf /home/ma-user/.cache/huggingface/datasets/
-CUDA_VISIBLE_DEVICES=0,1 python -u ft_script_lorec.py --train_size 90000 --test_range 0:30000 --K 30 --train_type sequential --test_type sequential --dataset ml-25m --mode ctr --model_name vicuna-7b --layers [q,v] --lr 3e-4 --bs 128 --weight_decay 0  --lora_dropout 0 --head lm --enable_softmax --lora_assemble_num 2
-    gpu 0
-
-    gpu 1
-
 
 
 

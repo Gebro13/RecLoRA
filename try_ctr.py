@@ -29,7 +29,7 @@ parser.add_argument("--ctr_out_layer", type=str, default='final')
 args = parser.parse_args()
 
 # ctr_model_path = f"/home/ma-user/work/llm/models/ctr_model/din/din_BookCrossing.pt"
-ctr_model_path = f"/data/zhujiachen/llm/models/ctr_model/{args.dataset}/din/hist_len_{args.ctr_K}/model.pt"
+ctr_model_path = f"/data/XXXX/llm/models/ctr_model/{args.dataset}/din/hist_len_{args.ctr_K}/model.pt"
 
 ctr_config = get_ctr_config(args)
 ctr_config = Config.from_dict(ctr_config)
@@ -46,7 +46,7 @@ elif args.dataset == 'BookCrossing':
     sample_num,train_type,test_range = 10000,'sequential',[0,1772]
 data_config = {"item_field_idx": ctr_config.item_field_idx, "dataset_name": args.dataset, "sample_num": sample_num, "hist_len": args.ctr_K}
 
-ctr_data = load_ctr_dataset(f"/data/zhujiachen/Datasets/{args.dataset}/benchmark_proc_data",256,train_type,test_range,data_config)
+ctr_data = load_ctr_dataset(f"/data/XXXX/Datasets/{args.dataset}/benchmark_proc_data",256,train_type,test_range,data_config)
 
 
 

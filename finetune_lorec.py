@@ -40,11 +40,11 @@ from peft import (
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--wandb", action="store_true", default=False)
-parser.add_argument("--output_path", type=str, default="/data/zhujiachen/llm/models/lorec")
+parser.add_argument("--output_path", type=str, default="/data/XXXX/llm/models/lorec")
 # parser.add_argument("--output_path", type=str, default="lora-Vicuna")
-parser.add_argument("--model_path", type=str, default="/data/zhujiachen/llm/models/vicuna-7b-v1.5")
+parser.add_argument("--model_path", type=str, default="/data/XXXX/llm/models/vicuna-7b-v1.5")
 parser.add_argument("--model_name", type=str, default="vicuna-13b")
-parser.add_argument("--ctr_model_path", type=str, default="/data/zhujiachen/llm/models/ctr_model/BookCrossing/din/model.pt")
+parser.add_argument("--ctr_model_path", type=str, default="/data/XXXX/llm/models/ctr_model/BookCrossing/din/model.pt")
 parser.add_argument("--eval_steps", type=int, default=200)
 parser.add_argument("--save_steps", type=int, default=200)
 parser.add_argument("--lr_scheduler_type", type=str, default="linear")
@@ -100,7 +100,7 @@ assert args.train_type in ["simple", "sequential", "mixed", "high","all"]
 assert args.test_type in ["simple", "sequential", "high"]
 assert args.dataset in ["ml-1m", "BookCrossing", "GoodReads", "AZ-Toys", "ml-25m"]
 
-data_path = f"/data/zhujiachen/Datasets/{args.dataset}/benchmark_proc_data/data"
+data_path = f"/data/XXXX/Datasets/{args.dataset}/benchmark_proc_data/data"
 
 t1 = time.time()
 if args.layers == "[up,down,gate]":
@@ -174,12 +174,12 @@ print(ddp)
 
 
 if args.model_name == "vicuna-7b":
-    args.model_path = "/data/zhujiachen/llm/models/vicuna-7b-v1.5"
+    args.model_path = "/data/XXXX/llm/models/vicuna-7b-v1.5"
     llama_config = {"model_name": "vicuna-7b", "model_path": args.model_path, "load_in_8bit": USE_8bit, "device_map":device_map, 'hidden_dim': 4096, 'intermediate_dim':11008, 'layer_num': 32}
     # args.per_device_train_batch_size *=2
     # args.per_device_eval_batch_size *=2
 elif args.model_name == "vicuna-13b":
-    args.model_path = "/data/zhujiachen/llm/models/vicuna"
+    args.model_path = "/data/XXXX/llm/models/vicuna"
     llama_config = {"model_name": "vicuna-13b", "model_path": args.model_path, "load_in_8bit": USE_8bit, "device_map":device_map, 'hidden_dim': 5120, 'intermediate_dim':13824, 'layer_num': 40}
 
 print(args.per_device_train_batch_size)
@@ -205,7 +205,7 @@ lora_config.enable_sqrt_after_softmax = args.enable_sqrt_after_softmax
 assert not (not lora_config.enable_softmax and lora_config.enable_sqrt_after_softmax), f"`enable_softmax` must be True, if `enable_sqrt_after_softmax` is True."
 
 lora_config.all_init_one = args.all_init_one
-lora_config.rella_model_pt = f'/data/zhujiachen/llm/models/rella_model/{args.dataset}/{args.model_name}/pytorch_model.bin' if args.load_rella else None
+lora_config.rella_model_pt = f'/data/XXXX/llm/models/rella_model/{args.dataset}/{args.model_name}/pytorch_model.bin' if args.load_rella else None
 # assert not (not lora_config.enable_softmax and lora_config.enable_sqrt_after_softmax), f"`rella_model_pt` must be True, if `all_init_one` is True."
 
 lora_config.routing_mode = args.routing_mode
@@ -225,7 +225,7 @@ elif args.agg_pt == 'o': #output
 
 
 if args.resume:
-    model_dict = torch.load('/data/zhujiachen/llm/ml-25m_lorec/_Dataset_ml-25m_CUDA_NUM_2_test_range_0:30000_True_False_layers_[q,v]_lr_0.0001_shot_90000_sequential_sequential_K_30_10_bs128_wd_0.0_model_vicuna-7b_mode_ctr_loradropout_0.0_lora_r_8_init_kaiming__load_rella__False_all_init_one_False_lora_assemble_num_16/checkpoint-1406/pytorch_model.bin')
+    model_dict = torch.load('/data/XXXX/llm/ml-25m_lorec/_Dataset_ml-25m_CUDA_NUM_2_test_range_0:30000_True_False_layers_[q,v]_lr_0.0001_shot_90000_sequential_sequential_K_30_10_bs128_wd_0.0_model_vicuna-7b_mode_ctr_loradropout_0.0_lora_r_8_init_kaiming__load_rella__False_all_init_one_False_lora_assemble_num_16/checkpoint-1406/pytorch_model.bin')
     model.load_state_dict(model_dict,strict=False)
 
 tokenizer = LlamaTokenizer.from_pretrained(
@@ -241,7 +241,7 @@ tokenizer.pad_token_id = 0  # unk. we want this to be different from the eos tok
 tokenizer.padding_side = "left"  # Allow batched inference
 
 
-CTR_DATA_PATH = f"/data/zhujiachen/Datasets/{args.dataset}/benchmark_proc_data"
+CTR_DATA_PATH = f"/data/XXXX/Datasets/{args.dataset}/benchmark_proc_data"
 if args.dataset == 'ml-25m':
     data_config = {"item_field_idx": ctr_config.item_field_idx, "dataset_name": "ml-25m", "sample_num": 90000, "hist_len": args.ctr_K, 'ret':args.ret}
 elif args.dataset == 'BookCrossing':
@@ -373,9 +373,9 @@ print(args.dataset)
 # ctr_model load
 if args.mode in ['ctr', 'vera']:
     if args.ret:
-        args.ctr_model_path = f"/data/zhujiachen/llm/models/ctr_model/{args.dataset}/sim/hist_len_{args.ctr_K}/model.pt"
+        args.ctr_model_path = f"/data/XXXX/llm/models/ctr_model/{args.dataset}/sim/hist_len_{args.ctr_K}/model.pt"
     else:
-        args.ctr_model_path = f"/data/zhujiachen/llm/models/ctr_model/{args.dataset}/din/hist_len_{args.ctr_K}/model.pt"
+        args.ctr_model_path = f"/data/XXXX/llm/models/ctr_model/{args.dataset}/din/hist_len_{args.ctr_K}/model.pt"
     state_dict = torch.load(args.ctr_model_path)
     model.CTR_model.load_state_dict(state_dict)
 
